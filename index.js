@@ -27,6 +27,7 @@ async function run() {
     await client.connect();
     const userCollection = client.db("usersDb").collection("users");
     const carCollection = client.db("usersDb").collection("cars");
+    const myCardCollection = client.db("usersDb").collection("my-cart");
 
     app.post("/users", async (req, res) => {
       const user = req.body
@@ -42,6 +43,13 @@ async function run() {
       console.log(result);
     })
 
+    app.post("/my-cart", async (req, res) => {
+      const user = req.body
+      const result = await myCardCollection.insertOne(user);
+      res.send(result)
+      console.log(result);
+    })
+
     app.get("/users", async (req, res) => {
       const result = await userCollection.find().toArray();
       res.send(result)
@@ -50,6 +58,11 @@ async function run() {
 
     app.get("/cars", async (req, res) => {
       const result = await carCollection.find().toArray();
+      res.send(result)
+      console.log(result);
+    })
+    app.get("/my-cart", async (req, res) =>{
+      const result = await myCardCollection.find().toArray();
       res.send(result)
       console.log(result);
     })
