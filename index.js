@@ -1,6 +1,6 @@
 const express = require('express')
 const cors = require('cors')
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app = express()
 const port = process.env.PORT || 5000
 
@@ -66,6 +66,21 @@ async function run() {
       res.send(result)
       console.log(result);
     })
+    app.get("/my-cart/:id", async (req, res) =>{
+      const id = req.params.id
+      const  query = {_id: new ObjectId(id)}
+      const result = await myCardCollection.findOne(query);
+      res.send(result)
+      console.log(result);
+    })
+
+    app.delete("/my-cart/:id", async (req, res) =>{
+      const id = req.params.id
+      const  query = {_id: new ObjectId(id)}
+      const result = await myCardCollection.deleteOne(query);
+      res.send(result)
+      console.log(query,"delete id");
+    });
     
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
